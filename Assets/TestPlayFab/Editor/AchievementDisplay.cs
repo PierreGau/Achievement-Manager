@@ -13,6 +13,8 @@ namespace Achievements
 {
     public class AchievementDisplay : EditorWindow
     {
+        static string folderPath = "";
+        static string filePath = "";
         Vector2 scrollPos = Vector2.zero;
         Texture2D add;
         AchievementsCreator creator;
@@ -22,7 +24,7 @@ namespace Achievements
         static void OnOpenWindow()
         {
             AchievementDisplay tm = EditorWindow.GetWindow<AchievementDisplay>(true, "Achievements");
-            tm.minSize = new Vector2(600, 100);
+            tm.minSize = new Vector2(680, 100);
             tm.Show();
         }
 
@@ -43,7 +45,6 @@ namespace Achievements
                 }
             }
             
-
             if (Achievement.achievements.Count != 0)
             {
                 if (achievementsTexture == null || achievementsTexture.Length < Achievement.achievements.Count)
@@ -81,13 +82,20 @@ namespace Achievements
             {
                 Achievement.ClearList();
             }
-            EditorGUILayout.EndHorizontal();
-        }
 
-        void LoadFromPlayFab()
-        {
-            Achievement newOne = new Achievement();
-            EditorJsonUtility.FromJsonOverwrite("oui", newOne);
+            else if (GUILayout.Button("Save to Local", GUILayout.Width(128), GUILayout.Height(20)))
+            {
+                folderPath = EditorUtility.OpenFolderPanel("Select destination folder", folderPath, "");
+                if (folderPath != string.Empty) 
+                    Achievement.PushToLocalJSON(folderPath);
+            }
+            else if (GUILayout.Button("Load from Local", GUILayout.Width(128), GUILayout.Height(20)))
+            {
+                filePath = EditorUtility.OpenFilePanel("Select destination folder", filePath, "json");
+                if (filePath != string.Empty)
+                    Achievement.LoadFromLocalJSON(filePath);
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         void SaveInPlayFab()

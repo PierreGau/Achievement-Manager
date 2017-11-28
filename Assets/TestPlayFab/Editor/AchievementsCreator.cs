@@ -41,11 +41,11 @@ namespace Achievements
             achievementName = EditorGUILayout.TextField("Achievement Name : ", achievementName);
             EditorGUILayout.Space();
 
-            if (Achievement.IsDescriptionActive)
-            {
+            //if (Achievement.IsDescriptionActive)
+            //{
                 description = EditorGUILayout.TextField("Achievement Description : ", description);
                 EditorGUILayout.Space();
-            }
+            //}
 
             matchingKey = EditorGUILayout.TextField(new GUIContent("Related Key : ", "Key in database where is stocked the Matching Data, none if you want to manualy unlock"), matchingKey);
             EditorGUILayout.Space();

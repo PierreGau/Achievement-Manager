@@ -5,6 +5,7 @@ using PlayFab;
 using PlayFab.ServerModels;
 using UnityEditor;
 using SimpleJSON;
+using System.IO;
 
 
 
@@ -35,45 +36,6 @@ namespace Achievements
         public string GetImagePath()
         {
             return values.sPath;
-        }
-
-        public static bool IsDescriptionActive
-        {
-            set
-            {
-                isDescriptionActive = value;
-            }
-
-            get
-            {
-                return isDescriptionActive;
-            }
-        }
-
-        public static bool IsRewardActive
-        {
-            get
-            {
-                return isRewardActive;
-            }
-
-            set
-            {
-                isRewardActive = value;
-            }
-        }
-
-        public static bool IsImageActive
-        {
-            get
-            {
-                return isImageActive;
-            }
-
-            set
-            {
-                isImageActive = value;
-            }
         }
 
         public string GetName()
@@ -148,27 +110,94 @@ namespace Achievements
             });
         }
 
+        public static void PushToLocalJSON(string _path)
+        {
+            string datas = ConvertToJson(achievements);
+            int fileCount = 0;
+            string[] files = Directory.GetFiles(_path);
+            foreach (string file in files)
+            {
+                if (file.EndsWith(".json"))
+                    fileCount++;
+            }
+            StreamWriter writer = new StreamWriter(_path + "/save" + fileCount + ".json");
+            try
+            {
+                writer.WriteLine(datas);
+            }
+            catch
+            {
+                Debug.Log("error when trying to write in " + _path);
+            }
+
+            writer.Dispose();
+            writer.Close();
+        }
+
+        public static void PushToLocalJSON(string _datas, string _path)
+        {
+            int fileCount = 0;
+            string[] files = Directory.GetFiles(_path);
+            foreach (string file in files)
+            {
+                if (file.EndsWith(".json"))
+                    fileCount++;
+            }
+            StreamWriter writer = new StreamWriter(_path + "/save" + fileCount + ".json");
+            try
+            {
+                writer.WriteLine(_datas);
+            }
+            catch
+            {
+                Debug.Log("error when trying to write in " + _path);
+            }
+
+            writer.Dispose();
+            writer.Close();
+        }
+
+        public static void LoadFromLocalJSON(string _path)
+        {
+            string datas;
+
+            StreamReader reader = new StreamReader(_path);
+            try
+            {
+                datas = reader.ReadToEnd();
+                //Debug.Log(datas);
+                LoadFromJson(datas);
+            }
+            catch
+            {
+                Debug.Log("error when trying to write in " + _path);
+            }
+
+            reader.Dispose();
+            reader.Close();
+        }
+
         public static void LoadFromPlayfab(Rect position)
         {
             string datas;
             var getRequest = new PlayFab.ServerModels.GetTitleDataRequest();
             PlayFabServerAPI.GetTitleData(getRequest, (result) => {
+                bool isLoadingOk = false;
                 foreach (var entry in result.Data)
                 {
                     if (string.Compare(entry.Key, "Achievements") == 0)
                     {
+                        isLoadingOk = true;
                         datas = entry.Value;
-                        //Debug.Log(datas);
                         LoadFromJson(datas);
-                        Rect popupRect = new Rect(position.x - 200, position.y, 200, 80);
-                        PopUp newPopUp = new PopUp();
-                        newPopUp.Init("Datas Succesfully loaded from PlayFab", popupRect);
                     }
                     else
                     {
                         Debug.Log("No achievements in database");
                     }
                 }
+                if(isLoadingOk)
+                    newPopUp(position, "Datas Succesfully loaded from PlayFab");
             },
             (error) => {
                 Debug.Log("Got error getting titleData:");
@@ -177,6 +206,12 @@ namespace Achievements
             });
         }
 
+        static void newPopUp(Rect position,string _text)
+        {
+            Rect popupRect = new Rect(position.x - 200, position.y, 200, 80);
+            PopUp newPopUp = new PopUp();
+            newPopUp.Init(_text, popupRect);
+        }
 
         static void OnOpenWindowMessage()
         {
@@ -190,7 +225,7 @@ namespace Achievements
             string json = "\"" + toConvert.sName + "\":" + EditorJsonUtility.ToJson(toConvert);
 
             return json;
-        }       
+        }
 
         static public string ConvertToJson(List<baseAchievement> toConvert)
         {
@@ -258,35 +293,6 @@ namespace Achievements
         {
             achievements.Clear();
         }
-        //public string LoadAchievements()
-        //{
-        //    string datas;
-        //    bool datasLoaded = false;
-        //    var getRequest = new PlayFab.ServerModels.GetTitleDataRequest();          
-        //    PlayFabServerAPI.GetTitleData(getRequest, (result) => {
-        //        foreach (var entry in result.Data)
-        //        {
-        //            if (string.Compare(entry.Key, "Achievements") == 0)
-        //            {
-        //                datas = entry.Key + entry.Value;
-        //                datasLoaded = true;
-        //                achievementsJSON = datas;
-        //            }
-        //            else
-        //            {
-        //                Debug.Log("No achievements in database");
-        //            }
-        //        }
-        //    },
-        //    (error) => {
-        //        Debug.Log("Got error getting titleData:");
-        //        Debug.Log(error.ErrorMessage);
-
-        //    });
-
-        //    return datasLoaded;
-        //}
-
 
         //Fonction de comparaison d'achievements
     }
