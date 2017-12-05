@@ -70,7 +70,7 @@ namespace Achievements
             EditorGUILayout.Space();
             if (GUILayout.Button("Add"))
             {
-                Achievement newAchievement = new Achievement(achievementName, description, matchingData, matchingKey, imageName, Treshold, reward, path);
+                AchievementEditor newAchievement = new AchievementEditor(achievementName, description, matchingData, matchingKey, imageName, Treshold, reward, path);
 
                 // mettre en place 3 possibilités pour le isAchievementOk :
                 // 1 : Il est bon 
@@ -82,7 +82,8 @@ namespace Achievements
              
                 if (isAchievementOk(newAchievement))
                 {
-                    Achievement.achievements.Add(newAchievement.values);
+                    newAchievement.values.iId = AchievementEditor.achievements.Count;
+                    AchievementEditor.achievements.Add(newAchievement.values);
                     //Debug.Log("Done");        
                     //string jason = "\"" + newAchievement.values.sName + "\":" + EditorJsonUtility.ToJson(newAchievement.values);
                     //Debug.Log(jason);
@@ -105,11 +106,11 @@ namespace Achievements
 
         //renvoyer short 0 = ok, 1 = warning, 2 = critique
         //out Achievement qui comporte des données identiques;
-        bool isAchievementOk(Achievement newAchievement)
+        bool isAchievementOk(AchievementEditor newAchievement)
         {
             bool isOk = true;
 
-            foreach (baseAchievement a in Achievement.achievements)
+            foreach (baseAchievement a in AchievementEditor.achievements)
             {
                 if (string.Compare(newAchievement.GetName(), a.sName) == 0)
                 {
@@ -122,7 +123,7 @@ namespace Achievements
 
         void ClearAchievementList()
         {
-            Achievement.achievements.Clear();
+            AchievementEditor.achievements.Clear();
         }
     }
 }

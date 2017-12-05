@@ -34,7 +34,7 @@ namespace Achievements
             EditorGUILayout.BeginHorizontal();
             if (!add)
             {
-                add = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/TestPlayFab/Editor/Resources/plus.png", typeof(Texture));
+                add = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/TestPlayFab/AchievementSystem/Editor/Resources/plus.png", typeof(Texture));
             }
             if (GUILayout.Button(add, GUILayout.Width(64), GUILayout.Height(64)))
             {
@@ -45,21 +45,21 @@ namespace Achievements
                 }
             }
             
-            if (Achievement.achievements.Count != 0)
+            if (AchievementEditor.achievements.Count != 0)
             {
-                if (achievementsTexture == null || achievementsTexture.Length < Achievement.achievements.Count)
+                if (achievementsTexture == null || achievementsTexture.Length < AchievementEditor.achievements.Count)
                 {
-                    achievementsTexture = new Texture2D[Achievement.achievements.Count];
+                    achievementsTexture = new Texture2D[AchievementEditor.achievements.Count];
                 }
-                for (int i = 0; i < Achievement.achievements.Count; i++)
+                for (int i = 0; i < AchievementEditor.achievements.Count; i++)
                 {
                     if (!achievementsTexture[i])
                     {
-                        achievementsTexture[i] = (Texture2D)AssetDatabase.LoadAssetAtPath(Achievement.achievements[i].sPath, typeof(Texture));
+                        achievementsTexture[i] = (Texture2D)AssetDatabase.LoadAssetAtPath(AchievementEditor.achievements[i].sPath, typeof(Texture));
                     }
                     if (GUILayout.Button(achievementsTexture[i], GUILayout.Width(64), GUILayout.Height(64)))
                     {
-                        Achievement.EditorDisplay(Achievement.achievements[i]);
+                        AchievementEditor.EditorDisplay(AchievementEditor.achievements[i]);
                     }
 
                 }
@@ -70,30 +70,30 @@ namespace Achievements
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Save to PlayFab", GUILayout.Width(128), GUILayout.Height(20)))
             {
-                Achievement.PushToPlayFab(position);     
+                AchievementEditor.PushToPlayFab(position);     
             }
 
             else if (GUILayout.Button("Load From Playfab", GUILayout.Width(128), GUILayout.Height(20)))
             {
-                Achievement.LoadFromPlayfab(position);
+                AchievementEditor.LoadFromPlayfab(position);
             }
 
             else if (GUILayout.Button("Clear list", GUILayout.Width(128), GUILayout.Height(20)))
             {
-                Achievement.ClearList();
+                AchievementEditor.ClearList();
             }
 
             else if (GUILayout.Button("Save to Local", GUILayout.Width(128), GUILayout.Height(20)))
             {
                 folderPath = EditorUtility.OpenFolderPanel("Select destination folder", folderPath, "");
                 if (folderPath != string.Empty) 
-                    Achievement.PushToLocalJSON(folderPath);
+                    AchievementEditor.PushToLocalJSON(folderPath);
             }
             else if (GUILayout.Button("Load from Local", GUILayout.Width(128), GUILayout.Height(20)))
             {
                 filePath = EditorUtility.OpenFilePanel("Select destination folder", filePath, "json");
                 if (filePath != string.Empty)
-                    Achievement.LoadFromLocalJSON(filePath);
+                    AchievementEditor.LoadFromLocalJSON(filePath);
             }
             EditorGUILayout.EndHorizontal();
         }

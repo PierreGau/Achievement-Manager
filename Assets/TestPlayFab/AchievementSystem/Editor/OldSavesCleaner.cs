@@ -67,7 +67,7 @@ namespace Achievements
                     {
                         //create a new save file with playfab datas
                         serverDatas = entry.Value;
-                        Achievement.PushToLocalJSON(serverDatas, _path);
+                        AchievementEditor.PushToLocalJSON(serverDatas, _path);
                     }            
                 }
 

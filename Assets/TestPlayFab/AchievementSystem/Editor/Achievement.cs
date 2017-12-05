@@ -11,20 +11,7 @@ using System.IO;
 
 namespace Achievements
 {
-    [System.Serializable]
-    public struct baseAchievement
-    {
-        public string sName ;
-        public string sDescription;
-        public string sMatchingData;
-        public int iTreshold;
-        public string sMatchingKey;
-        public int iReward;
-        public string sImage;
-        public string sPath;
-    };
-
-    public class Achievement
+    public class AchievementEditor
     {
         public baseAchievement values;
         public static List<baseAchievement> achievements = new List<baseAchievement>();
@@ -43,7 +30,7 @@ namespace Achievements
             return values.sName;
         }
 
-        public Achievement(string _name, string _description, string _MatchingData, string _MatchingKey, string _Image, int _Treshold, int _Reward, string imagePath)
+        public AchievementEditor(string _name, string _description, string _MatchingData, string _MatchingKey, string _Image, int _Treshold, int _Reward, string imagePath)
         {
             values.sName = _name;
             values.sDescription = _description;
@@ -55,7 +42,7 @@ namespace Achievements
             values.sPath = imagePath;
         }
 
-        public Achievement()
+        public AchievementEditor()
         {
             values.sName = "";
             values.sDescription = "";
@@ -76,9 +63,9 @@ namespace Achievements
             //Debug.Log(display);
         }
 
-        public Achievement CreatFromJSON(string JSONObject)
+        public AchievementEditor CreatFromJSON(string JSONObject)
         {
-            Achievement toReturn = new Achievement();
+            AchievementEditor toReturn = new AchievementEditor();
 
             return toReturn;
         }
@@ -252,6 +239,7 @@ namespace Achievements
             {
                 baseAchievement newOne;
 
+                newOne.iId = content[i]["iId"];
                 newOne.sName = content[i]["sName"];
                 newOne.sDescription = content[i]["sDescription"];
                 newOne.sMatchingData = content[i]["sMatchingData"];
@@ -274,6 +262,7 @@ namespace Achievements
             {
                 baseAchievement newOne;
 
+                newOne.iId = content[i]["iId"];
                 newOne.sName = content[i]["sName"];
                 newOne.sDescription = content[i]["sDescription"];
                 newOne.sMatchingData = content[i]["sMatchingData"];

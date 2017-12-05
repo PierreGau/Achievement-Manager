@@ -14,6 +14,7 @@ public class LeTest : MonoBehaviour
         var testCreation = new LoginWithPlayFabRequest { Username = "Hudnel1664", TitleId = "96F3", Password = "12test12"};
         //var request = new LoginWithPlayFabRequest { Password = "yosh", TitleId = "96F3" , Username =  "Enel1664" };
         //PlayFabClientAPI.LoginWithPlayFab(testCreation, OnLoginSuccess, OnLoginFailure);  
+
         GetTitleInternalData();
     }
 

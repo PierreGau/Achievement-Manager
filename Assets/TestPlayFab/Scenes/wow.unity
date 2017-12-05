@@ -117,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 374188704}
   - component: {fileID: 374188703}
+  - component: {fileID: 374188705}
   m_Layer: 0
   m_Name: oui
   m_TagString: Untagged
@@ -148,6 +149,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &374188705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 374188702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3aece503d68f634cbe58d4c66bbec2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TitleId: 96F3
+  username: Hudnel1664
+  PassWord: 12test12
 --- !u!115 &693136363
 MonoScript:
   m_ObjectHideFlags: 0
