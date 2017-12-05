@@ -46,22 +46,14 @@ namespace Achievements
 
         private void DeleteOldSaves(string _path)
         {
-            //will contain json datas from server or local file
             string serverDatas = "";
-            string localDatas = "";
-
             string[] files = Directory.GetFiles(_path);
-            StreamReader reader;
             foreach (string file in files)
             {
-                //select json files
+                //select .json files
                 if (file.EndsWith(".json"))
                 {
-
-
                     File.Delete(file); File.Delete(file + ".meta");
-
-
                 }
             }
 
@@ -73,6 +65,7 @@ namespace Achievements
                 {
                     if (string.Compare(entry.Key, "Achievements") == 0)
                     {
+                        //create a new save file with playfab datas
                         serverDatas = entry.Value;
                         Achievement.PushToLocalJSON(serverDatas, _path);
                     }            
