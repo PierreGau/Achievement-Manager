@@ -18,38 +18,33 @@ public class Demo_ConnectUser : MonoBehaviour
 
     LoginWithPlayFabRequest testCreation;
     string PlayerID = "";
+
+    AchievementManager achievementManager;
+
     // Use this for initialization
     void Start ()
     {
         testCreation = new LoginWithPlayFabRequest { Username = username, TitleId = TitleId, Password = PassWord };
         PlayFabClientAPI.LoginWithPlayFab(testCreation, OnLoginSuccess, OnLoginFailure);
-        //AchievementManager.GetSingleton();
+        achievementManager = AchievementManager.GetSingleton();
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-		
+		if(AchievementManager.DatasSuccessfullyLoaded)
+        {
+
+            //AchievementManager.LogLockedAchievements();
+            //AchievementManager.LogUnlockedAchievements();
+        }
 	}
 
     private void OnLoginSuccess(LoginResult result)
     {
         Debug.Log("Congratulations, you made your first successful API call!");
-        var dataRequest = new GetUserDataRequest();
-        dataRequest.PlayFabId = result.PlayFabId;
-        dataRequest.Keys = new List<string>();
-        dataRequest.Keys.Add("UnlockedAchievements");
-        PlayFabClientAPI.GetUserData(dataRequest, OnGetDataSuccess, OnGetDataFailure);
-    }
 
-    private void OnGetDataSuccess(GetUserDataResult result)
-    {
-        Debug.Log(result.Data["UnlockedAchievements"].Value);
-    }
-
-    private void OnGetDataFailure(PlayFabError error)
-    {
-        Debug.Log("PB de GetData");
+        achievementManager.Init(result.PlayFabId);
     }
 
     private void OnLoginFailure(PlayFabError error)
@@ -57,5 +52,5 @@ public class Demo_ConnectUser : MonoBehaviour
         Debug.LogWarning("Something went wrong with your first API call.  :(");
         Debug.LogError("Here's some debug information:");
         Debug.LogError(error.GenerateErrorReport());
-    }
+    }  
 }
